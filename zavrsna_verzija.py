@@ -75,9 +75,9 @@ class Application:
         for th in table_rows[1:]:
             date_time = th.find_all('td')[0].text
             # Convert str to time 
-            konvertovano_v = datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S').time()
+            conver_time = datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S').time()
             # And reverse it to drop date and keep only the time
-            date_time = str(konvertovano_v)     
+            date_time = str(conver_time)     
             so2_values = th.find_all('td')[1].text
             # If results from web table are '', add them value of 0   
             try:
@@ -124,7 +124,7 @@ class Application:
             with open(file_path, 'w') as f:
                 print('SO2 = {}'.format(self.web_data), file = f )
             
-            msg  = 'File name: {}'.format(filename)
+            msg  = 'Sacuvan je fajl: {}'.format(filename)
             
             self.pop_up_msg(msg)
 
@@ -138,26 +138,24 @@ class Application:
         directory = './rezultati'
 
         for root, directories, files in os.walk(directory): 
-            for filename in files: 
+            for filename in files:
                 filepath = os.path.join(root, filename) 
                 file_paths.append(filepath) 
-    
-        # writing files to a zipfile 
-        with ZipFile('zip_rezultati.zip','w') as zip: 
-            for file in file_paths:     
-                zip.write(file)
-        
-        msg  = 'Uspesno je kreiran zip fajl'
-            
-        self.pop_up_msg(msg) 
-    
+
+                # writing files to a zipfile 
+                with ZipFile('zip_rezultati.zip','w') as zip: 
+                    for file in file_paths:     
+                        zip.write(file)
+                
+                msg  = 'Uspesno je kreiran zip fajl'
+                self.pop_up_msg(msg) 
 
     def pop_up_msg(self,msg):
 
         pop_up = Tk()
 
         pop_up.title('')
-        pop_up.geometry('300x100+500+400')
+        pop_up.geometry('300x100+800+400')
 
         label_1 = ttk.Label(pop_up, text = msg,font = 15)
         label_1.pack(padx=10, pady=10)
@@ -170,7 +168,16 @@ class Application:
 
 def main():
     root = tkinter.Tk()
-    root.geometry('1200x900+400+400')
+    # Resize to center of screen 
+    window_height = 1200
+    window_width = 1200
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x_cordinate = int((screen_width/2) - (window_width/2))
+    y_cordinate = int((screen_height/2) - (window_height/2))
+
+    root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
+
     root.title('ZAGADJENJE VAZDUHA')
     app = Application(root)
     root.mainloop()
