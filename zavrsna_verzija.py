@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg,NavigationToolbar2Tk
 from matplotlib import style
 
 import tkinter
@@ -46,6 +46,9 @@ class Application:
         self.canvas = FigureCanvasTkAgg(self.fig,master=master)
         self.canvas.get_tk_widget().pack(side='bottom', fill='both', expand=1)
 
+        self.toolbar = NavigationToolbar2Tk(self.canvas, master)
+        self.toolbar.update()
+        
         self.web_data = {}
 
         frame.pack()
